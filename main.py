@@ -13,18 +13,33 @@ class BusinessCardList:
             self.business_cards.append(
                 {
                     "name": fake.name(),
-                    "company": fake.company(),
-                    "position": fake.job(),
                     "email": fake.email(),
                 }
             )
 
-        self.display_business_cards_list()
-            
+        self.sort_by_name()
+        self.sort_by_surname()
+        self.sort_by_email()
+   
     def display_business_cards_list(self):
         for card in self.business_cards:
-            print(f"Name: {card['name']} , Company: {card['company']}, Position: {card['position']}, Email: {card['email']}")
+            split_name = card['name'].split()
+            print(f"Name: {split_name[0]} Surname: {split_name[1]}, Email: {card['email']}")
     
-    
-MyList = BusinessCardList(5)
+    def sort_by_name(self):
+        self.business_cards = sorted(self.business_cards, key=lambda card: card['name'])
+        self.display_business_cards_list()
+        print("\n")
 
+    def sort_by_surname(self):
+        self.business_cards = sorted(self.business_cards, key=lambda card: card['name'].split()[1])
+        self.display_business_cards_list()
+        print("\n")
+
+    def sort_by_email(self):
+        self.business_cards = sorted(self.business_cards, key=lambda card: card['email'])
+        self.display_business_cards_list()
+        print("\n")
+ 
+
+MyList = BusinessCardList(5)
