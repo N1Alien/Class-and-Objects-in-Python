@@ -298,3 +298,6 @@ print(f"Most popular movies and TV shows of {current_date}")
 
 for item in library.top_titles(3):
     print(f"{item} - Plays: {item.play_count}")
+
+
+print('**************************************************************************************************************')
