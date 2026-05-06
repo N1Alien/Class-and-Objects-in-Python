@@ -3,92 +3,90 @@ from datetime import datetime
 
 # task 1  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+from faker import Faker
 
-# from datetime import datetime
-# from faker import Faker
+fake = Faker()
 
-# from faker import Faker
+number_of_cards = int(input("enter number of cards:"))
+type_of_cards = input("enter 1 for business cards, 2 for base cards:")
 
-# fake = Faker()
+class BaseContact:
+    def __init__(self, name, surname, phone_number, email):
+        self.name = name
+        self.surname = surname
+        self.phone_number = phone_number
+        self.email = email
 
-# number_of_cards = int(input("enter number of cards:"))
-# type_of_cards = input("enter 1 for business cards, 2 for base cards:")
+    def contact(self):
+        print(f"I'm dialing {self.phone_number} and calling {self.name} {self.surname}")
 
-# business_cards = []
-
-# class BaseContact:
-#     def __init__(self, name, surname, phone_number, email):
-#         self.name = name
-#         self.surname = surname
-#         self.phone_number = phone_number
-#         self.email = email
-
-#     def contact(self):
-#         print(f"I'm dialing {self.phone_number} and calling {self.name} {self.surname}")
-
-#     @property
-#     def label_length(self):
-#         return len(self.name) + len(self.surname)
+    @property
+    def label_length(self):
+        return len(self.name) + len(self.surname)
 
 
-# class BusinessContact(BaseContact):
-#     def __init__(self, name, surname, phone_number, email, company_name, position, company_phone_number):
-#         super().__init__(name, surname, phone_number, email)
-#         self.company_name = company_name
-#         self.position = position
-#         self.company_phone_number = company_phone_number
+class BusinessContact(BaseContact):
+    def __init__(self, name, surname, phone_number, email, company_name, position, company_phone_number):
+        super().__init__(name, surname, phone_number, email)
+        self.company_name = company_name
+        self.position = position
+        self.company_phone_number = company_phone_number
 
-#     def contact(self):
-#         print(
-#             f"I'm dialing {self.company_phone_number} and calling {self.name} {self.surname} from {self.company_name}"
-#         )
-
-
-# def create_business_cards_list(number_of_cards, contact_type):
-#     for _ in range(number_of_cards):
-#         if contact_type == "1":
-#             business_cards.append(
-#                 BusinessContact(
-#                     name=fake.first_name(),
-#                     surname=fake.last_name(),
-#                     phone_number=fake.phone_number(),
-#                     email=fake.email(),
-#                     company_name=fake.company(),
-#                     position=fake.job(),
-#                     company_phone_number=fake.phone_number(),
-#                 )
-#             )
-#         else:
-#             business_cards.append(
-#                 BaseContact(
-#                     name=fake.first_name(),
-#                     surname=fake.last_name(),
-#                     phone_number=fake.phone_number(),
-#                     email=fake.email(),
-#                 )
-#             )
-
-#     for card in business_cards:
-#         print(f"{card.name} {card.surname} - {card.email} - {card.phone_number} - {card.company_phone_number if isinstance(card, BusinessContact) else 'N/A'} - {card.position if isinstance(card, BusinessContact) else 'N/A'} - {card.company_name if isinstance(card, BusinessContact) else 'N/A'}2")
+    def contact(self):
+        print(
+            f"I'm dialing {self.company_phone_number} and calling {self.name} {self.surname} from {self.company_name}"
+        )
 
 
-# create_business_cards_list(number_of_cards, type_of_cards)
+def create_business_cards_list(number_of_cards, contact_type):
+    cards = []
+    for _ in range(number_of_cards):
+        if contact_type == "1":
+            cards.append(
+                BusinessContact(
+                    name=fake.first_name(),
+                    surname=fake.last_name(),
+                    phone_number=fake.phone_number(),
+                    email=fake.email(),
+                    company_name=fake.company(),
+                    position=fake.job(),
+                    company_phone_number=fake.phone_number(),
+                )
+            )
+        else:
+            cards.append(
+                BaseContact(
+                    name=fake.first_name(),
+                    surname=fake.last_name(),
+                    phone_number=fake.phone_number(),
+                    email=fake.email(),
+                )
+            )
 
-# new_contact_base = BaseContact("John", "Doe", "99999999999", "john.doe@example.com")
-# new_contact_base.contact()
-
-# new_contact_business = BusinessContact(
-#     name="Jane",
-#     surname="Smith",
-#     phone_number="987654321",
-#     email="jane.smith@example.com",
-#     company_name="Example Corp",
-#     position="Manager",
-#     company_phone_number="123-456-7890"
-# )
-# new_contact_business.contact()
+    for card in cards:
+        print(f"{card.name} {card.surname} - {card.email} - {card.phone_number} - {card.company_phone_number if isinstance(card, BusinessContact) else 'N/A'} - {card.position if isinstance(card, BusinessContact) else 'N/A'} - {card.company_name if isinstance(card, BusinessContact) else 'N/A'}")
+    
+    return cards
 
 
+create_business_cards_list(number_of_cards, type_of_cards)
+
+new_contact_base = BaseContact("John", "Doe", "99999999999", "john.doe@example.com")
+new_contact_base.contact()
+
+new_contact_business = BusinessContact(
+    name="Jane",
+    surname="Smith",
+    phone_number="987654321",
+    email="jane.smith@example.com",
+    company_name="Example Corp",
+    position="Manager",
+    company_phone_number="123-456-7890"
+)
+new_contact_business.contact()
+
+print('**************************************************************************************************************')
+print('\n')
 # decorators  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -268,26 +266,26 @@ library.add_item(TVSeries("Space above and beyond", 1987, "Action", 1, 1))
 # for item in library.top_titles(5, 'series'):
 #     print(f"{item} - Plays: {item.play_count}")
 
-def add_season_to_library(library, title, release_year, genre, season_number, num_episodes):
-    for episode in range(1, num_episodes + 1):
-        library.add_item(TVSeries(title, release_year, genre, season_number, episode))
+# def add_season_to_library(library, title, release_year, genre, season_number, num_episodes):
+#     for episode in range(1, num_episodes + 1):
+#         library.add_item(TVSeries(title, release_year, genre, season_number, episode))
 
 
-# Example usage:
-add_season_to_library(library, "Doctor Who", 2005, "Science Fiction", 1, 10)
-library.display_library()
+# # Example usage:
+# add_season_to_library(library, "Doctor Who", 2005, "Science Fiction", 1, 10)
+# library.display_library()
 
-print(library)
+# print(library)
 
-def count_series_episodes(library, series_title):
-    episodes = [item for item in library.items if isinstance(item, TVSeries) and item.title.lower() == series_title.lower()]
-    print(f"{series_title}: {len(episodes)} episodes available")
-    return len(episodes)
+# def count_series_episodes(library, series_title):
+#     episodes = [item for item in library.items if isinstance(item, TVSeries) and item.title.lower() == series_title.lower()]
+#     print(f"{series_title}: {len(episodes)} episodes available")
+#     return len(episodes)
 
 
-# Example usage:
-count_series_episodes(library, "Doctor Who")
-count_series_episodes(library, "The Simpsons")
+# # Example usage:
+# count_series_episodes(library, "Doctor Who")
+# count_series_episodes(library, "The Simpsons")
 
 
 
